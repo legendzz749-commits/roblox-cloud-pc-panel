@@ -173,15 +173,32 @@ function getSelectedUrl() {
   return route ? route.getUrl(cloudConfig) : "";
 }
 
+function formatSessionDuration(minutes) {
+  const duration = Number(minutes);
+  const hours = Math.floor(duration / 60);
+  const remainingMinutes = duration % 60;
+
+  if (duration < 60) {
+    return `${duration} min`;
+  }
+
+  if (remainingMinutes === 0) {
+    return `${hours} hr`;
+  }
+
+  return `${hours} hr ${remainingMinutes} min`;
+}
+
 function render(message) {
   const route = routes[selectedRoute];
+  const sessionLabel = formatSessionDuration(sessionLength.value);
   selectedName.textContent = route.name;
   providerName.textContent = cloudConfig.providerName || "Not configured";
   machineName.textContent = cloudConfig.machineName || "Roblox Cloud PC";
   screenMeta.textContent = deviceLabels[selectedDevice];
   machineRegion.textContent = regionLabels[regionSelect.value];
-  sessionValue.textContent = sessionLength.value;
-  sessionMetric.textContent = `${sessionLength.value} min`;
+  sessionValue.textContent = sessionLabel;
+  sessionMetric.textContent = sessionLabel;
   accessMetric.textContent = selectedRoute === "remote" ? "Remote" : route.name;
   panelStatus.textContent = backendReachable ? "Backend connected" : "Browser-only mode";
   startMachine.disabled = !backendReachable || !cloudConfig.controlEnabled;

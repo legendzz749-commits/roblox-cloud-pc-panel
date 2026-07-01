@@ -53,9 +53,9 @@
             <i data-lucide="timer"></i>
             <h2>Session</h2>
           </div>
-          <label class="field-label" for="sessionLength">Minutes</label>
-          <input id="sessionLength" class="range-field" type="range" min="15" max="180" step="15" value="60" />
-          <div class="range-value"><span id="sessionValue">60</span> min</div>
+          <label class="field-label" for="sessionLength">Duration</label>
+          <input id="sessionLength" class="range-field" type="range" min="15" max="1440" step="15" value="180" />
+          <div class="range-value"><span id="sessionValue">3 hr</span><span>24 hr max</span></div>
         </section>
 
         <section class="control-group">
@@ -133,7 +133,7 @@
                 </div>
                 <div>
                   <span class="metric-label">Session</span>
-                  <strong id="sessionMetric">60 min</strong>
+                  <strong id="sessionMetric">3 hr</strong>
                 </div>
               </div>
               <div class="action-row">

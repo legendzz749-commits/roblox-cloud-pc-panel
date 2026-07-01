@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Roblox Cloud PC Control Panel</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-panel" aria-label="Cloud PC controls">
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">
+            <i data-lucide="server"></i>
+          </div>
+          <div>
+            <h1>Cloud PC</h1>
+            <p>Roblox control</p>
+          </div>
+        </div>
+
+        <section class="control-group">
+          <div class="section-heading">
+            <i data-lucide="monitor-smartphone"></i>
+            <h2>Client</h2>
+          </div>
+          <div class="segmented" role="group" aria-label="Client device">
+            <button class="segment is-active" type="button" data-device="phone">Phone</button>
+            <button class="segment" type="button" data-device="tablet">Tablet</button>
+            <button class="segment" type="button" data-device="desktop">Desktop</button>
+          </div>
+        </section>
+
+        <section class="control-group">
+          <div class="section-heading">
+            <i data-lucide="radio-tower"></i>
+            <h2>Region</h2>
+          </div>
+          <label class="field-label" for="region">Server target</label>
+          <select id="region" class="select-field">
+            <option value="auto">Auto</option>
+            <option value="na">North America</option>
+            <option value="eu">Europe</option>
+            <option value="apac">Asia Pacific</option>
+            <option value="latam">Latin America</option>
+          </select>
+        </section>
+
+        <section class="control-group">
+          <div class="section-heading">
+            <i data-lucide="timer"></i>
+            <h2>Session</h2>
+          </div>
+          <label class="field-label" for="sessionLength">Minutes</label>
+          <input id="sessionLength" class="range-field" type="range" min="15" max="180" step="15" value="60" />
+          <div class="range-value"><span id="sessionValue">60</span> min</div>
+        </section>
+
+        <section class="control-group">
+          <div class="section-heading">
+            <i data-lucide="link"></i>
+            <h2>Links</h2>
+          </div>
+          <label class="field-label" for="remoteAccessUrl">Remote access URL</label>
+          <input id="remoteAccessUrl" class="text-field" type="url" placeholder="https://remotedesktop.google.com/access" />
+          <label class="field-label field-spaced" for="providerConsoleUrl">Provider console URL</label>
+          <input id="providerConsoleUrl" class="text-field" type="url" placeholder="https://console.aws.amazon.com/" />
+          <button class="secondary-action" id="saveLinks" type="button">
+            <i data-lucide="save"></i>
+            <span>Save links</span>
+          </button>
+        </section>
+
+        <section class="control-group">
+          <div class="section-heading">
+            <i data-lucide="shield-check"></i>
+            <h2>Safety</h2>
+          </div>
+          <label class="check-row">
+            <input id="safeLogin" type="checkbox" checked />
+            <span>Official login only</span>
+          </label>
+          <label class="field-label field-spaced" for="controlToken">Control token</label>
+          <input id="controlToken" class="text-field" type="password" autocomplete="off" placeholder="Required for start/stop" />
+        </section>
+      </aside>
+
+      <main class="main-panel">
+        <header class="top-bar">
+          <div>
+            <p class="eyebrow">Always-on cloud machine</p>
+            <h2>Roblox cloud PC control</h2>
+          </div>
+          <div class="status-pill" id="panelStatus">
+            <i data-lucide="activity"></i>
+            <span>Checking backend</span>
+          </div>
+        </header>
+
+        <section class="workspace-grid">
+          <div class="machine-frame" aria-label="Cloud PC preview">
+            <div class="machine-topbar">
+              <span id="machineName">Roblox Cloud PC</span>
+              <span id="machineRegion">Auto region</span>
+            </div>
+            <div class="machine-screen">
+              <div class="screen-visual">
+                <div class="signal-stack" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div>
+                  <p class="screen-title">Roblox</p>
+                  <p class="screen-meta" id="screenMeta">Phone profile ready</p>
+                </div>
+              </div>
+              <div class="metric-grid">
+                <div>
+                  <span class="metric-label">Panel latency</span>
+                  <strong id="latencyMetric">-- ms</strong>
+                </div>
+                <div>
+                  <span class="metric-label">Cloud PC</span>
+                  <strong id="cloudStatusMetric">Unknown</strong>
+                </div>
+                <div>
+                  <span class="metric-label">Access</span>
+                  <strong id="accessMetric">Manual</strong>
+                </div>
+                <div>
+                  <span class="metric-label">Session</span>
+                  <strong id="sessionMetric">60 min</strong>
+                </div>
+              </div>
+              <div class="action-row">
+                <button class="primary-action" id="quickLaunch" type="button">
+                  <i data-lucide="play"></i>
+                  <span>Open selected</span>
+                </button>
+                <button class="secondary-action" id="refreshStatus" type="button">
+                  <i data-lucide="refresh-cw"></i>
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="routes-panel">
+            <div class="route-card is-selected" data-route="remote">
+              <div class="route-icon"><i data-lucide="screen-share"></i></div>
+              <div>
+                <h3>Remote access</h3>
+                <p>Open the configured cloud PC connection page.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select remote access">
+                <i data-lucide="check"></i>
+              </button>
+            </div>
+
+            <div class="route-card" data-route="chrome">
+              <div class="route-icon"><i data-lucide="chrome"></i></div>
+              <div>
+                <h3>Chrome Remote Desktop</h3>
+                <p>Simple browser-based access to a Windows cloud PC.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select Chrome Remote Desktop">
+                <i data-lucide="circle"></i>
+              </button>
+            </div>
+
+            <div class="route-card" data-route="parsec">
+              <div class="route-icon"><i data-lucide="gamepad-2"></i></div>
+              <div>
+                <h3>Parsec</h3>
+                <p>Low-latency remote gaming when installed on the cloud PC.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select Parsec">
+                <i data-lucide="circle"></i>
+              </button>
+            </div>
+
+            <div class="route-card" data-route="moonlight">
+              <div class="route-icon"><i data-lucide="sun"></i></div>
+              <div>
+                <h3>Moonlight</h3>
+                <p>Sunshine/Moonlight route for game-streaming hosts.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select Moonlight">
+                <i data-lucide="circle"></i>
+              </button>
+            </div>
+
+            <div class="route-card" data-route="roblox">
+              <div class="route-icon"><i data-lucide="box"></i></div>
+              <div>
+                <h3>Roblox</h3>
+                <p>Open Roblox after connecting to the remote machine.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select Roblox">
+                <i data-lucide="circle"></i>
+              </button>
+            </div>
+
+            <div class="route-card" data-route="console">
+              <div class="route-icon"><i data-lucide="terminal"></i></div>
+              <div>
+                <h3>Provider console</h3>
+                <p>Open the cloud provider dashboard for billing and power state.</p>
+              </div>
+              <button class="icon-button" type="button" aria-label="Select provider console">
+                <i data-lucide="circle"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="bottom-grid" aria-label="Machine details">
+          <div class="detail-panel">
+            <div class="section-heading">
+              <i data-lucide="power"></i>
+              <h2>Machine Control</h2>
+            </div>
+            <div class="button-grid">
+              <button class="secondary-action" id="startMachine" type="button">
+                <i data-lucide="play-circle"></i>
+                <span>Start PC</span>
+              </button>
+              <button class="secondary-action danger-action" id="stopMachine" type="button">
+                <i data-lucide="power-off"></i>
+                <span>Stop PC</span>
+              </button>
+            </div>
+            <dl class="details-list">
+              <div>
+                <dt>Selected</dt>
+                <dd id="selectedName">Remote access</dd>
+              </div>
+              <div>
+                <dt>Provider</dt>
+                <dd id="providerName">Not configured</dd>
+              </div>
+              <div>
+                <dt>Last check</dt>
+                <dd id="lastCheck">Never</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="detail-panel">
+            <div class="section-heading">
+              <i data-lucide="lock-keyhole"></i>
+              <h2>Safety Gate</h2>
+            </div>
+            <div class="safety-state" id="safetyState">
+              <strong>Ready</strong>
+              <span>External launches open in a new browser tab.</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

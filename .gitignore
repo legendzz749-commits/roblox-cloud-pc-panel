@@ -1,0 +1,12 @@
+# Contains API keys — never commit
+config.json
+
+# Runtime data
+jarvis_memory.json
+reminders.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
